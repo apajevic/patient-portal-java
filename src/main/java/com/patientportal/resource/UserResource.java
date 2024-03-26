@@ -1,6 +1,7 @@
 package com.patientportal.resource;
 
 import com.patientportal.dto.UserDTO;
+import com.patientportal.model.User;
 import com.patientportal.response.UserResponse;
 import com.patientportal.service.UserService;
 import jakarta.inject.Inject;
@@ -8,7 +9,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("api/v1/users")
@@ -19,10 +22,15 @@ public class UserResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(UserDTO user) {
-        userService.create(user);
+    public Response create(UserDTO request) {
+        User user = userService.create(request);
 
-        return Response.ok().build();
+        Map<String, String> response = new HashMap<>();
+        response.put("status:", "User created successfully");
+        response.put("id:", user.getId().toString());
+        response.put("email:", user.getEmail());
+
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
     @GET

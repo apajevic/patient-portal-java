@@ -21,7 +21,7 @@ public class UserService {
     UserRepository userRepository;
 
     @Transactional
-    public void create(UserDTO request) {
+    public User create(UserDTO request) {
         boolean userExists = Stream.of(
                         userRepository.find("email", request.email()).firstResult(),
                         userRepository.find("phone", request.phone()).firstResult())
@@ -44,6 +44,7 @@ public class UserService {
         user.setGender(request.gender());
 
         userRepository.persist(user);
+        return user;
     }
 
     public User getById(Long id) {

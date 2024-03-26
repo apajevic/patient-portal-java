@@ -1,11 +1,15 @@
 package com.patientportal.resource;
 
 import com.patientportal.dto.AppointmentDTO;
+import com.patientportal.model.Appointment;
 import com.patientportal.service.AppointmentService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("api/v1/appointments")
 public class AppointmentResource {
@@ -15,10 +19,14 @@ public class AppointmentResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(AppointmentDTO appointment) {
-        appointmentService.create(appointment);
+    public Response create(AppointmentDTO request) {
+        Appointment appointment = appointmentService.create(request);
 
-        return Response.ok().build();
+        Map<String, String> response = new HashMap<>();
+        response.put("status:", "Appointment created successfully");
+        response.put("id:", appointment.getId().toString());
+
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
     @GET

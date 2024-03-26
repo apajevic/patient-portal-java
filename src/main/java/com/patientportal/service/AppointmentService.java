@@ -21,7 +21,7 @@ public class AppointmentService {
     UserRepository userRepository;
 
     @Transactional
-    public void create(AppointmentDTO request){
+    public Appointment create(AppointmentDTO request){
         User patient = userRepository.findByIdOptional(request.patientId())
                 .orElseThrow(() -> new NotFoundException("Patient with id " + request.patientId() + " not found"));
 
@@ -30,7 +30,7 @@ public class AppointmentService {
 
         Appointment appointment = new Appointment(patient, doctor, request.date(), request.startTime(), request.endTime(), request.location(), request.description());
         appointmentRepository.persist(appointment);
-
+        return appointment;
     }
 
     public Appointment getById(Long id) {
