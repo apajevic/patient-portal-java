@@ -2,9 +2,8 @@ package com.patientportal.dto;
 
 import com.patientportal.model.Gender;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.Length;
 
-public record UserDTO(
+public record RegisterDTO(
         @NotBlank @Email String email,
         @NotBlank String name,
         @NotBlank String phone,

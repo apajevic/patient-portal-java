@@ -1,14 +1,15 @@
 package com.patientportal.service;
 
-import com.patientportal.dto.UserDTO;
+import com.patientportal.dto.RegisterDTO;
+import com.patientportal.dto.UpdateUserDTO;
 import com.patientportal.model.User;
 import com.patientportal.repository.UserRepository;
-import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,8 +21,11 @@ public class UserService {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    PasswordService passwordService;
+
     @Transactional
-    public User create(UserDTO request) {
+    public User create(RegisterDTO request) {
         boolean userExists = Stream.of(
                         userRepository.find("email", request.email()).firstResult(),
                         userRepository.find("phone", request.phone()).firstResult())
@@ -38,7 +42,7 @@ public class UserService {
         User user = new User();
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setPassword(BcryptUtil.bcryptHash(request.password()));
+        user.setPassword(passwordService.hashPassword(request.password()));
         user.setPhone(request.phone());
         user.setAddress(request.address());
         user.setGender(request.gender());
@@ -59,6 +63,29 @@ public class UserService {
         return users.stream()
                 .filter(User::isActive)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public User update(Long id, UpdateUserDTO request) {
+        User user = userRepository.findByIdOptional(id)
+                .orElseThrow(() -> new NotFoundException("User with id " + id + " not found"));
+
+        if (request.name() != null) {
+            user.setName(request.name());
+        }
+        if (request.phone() != null) {
+            user.setPhone(request.phone());
+        }
+        if (request.address() != null) {
+            user.setAddress(request.address());
+        }
+        if (request.gender() != null) {
+            user.setGender(request.gender());
+        }
+
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.persist(user);
+        return user;
     }
 
     @Transactional
