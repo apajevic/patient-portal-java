@@ -1,6 +1,7 @@
 package com.patientportal.resource;
 
-import com.patientportal.dto.UserDTO;
+import com.patientportal.dto.RegisterDTO;
+import com.patientportal.dto.UpdateUserDTO;
 import com.patientportal.model.User;
 import com.patientportal.response.UserResponse;
 import com.patientportal.service.UserService;
@@ -22,7 +23,7 @@ public class UserResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(UserDTO request) {
+    public Response create(RegisterDTO request) {
         User user = userService.create(request);
 
         Map<String, String> response = new HashMap<>();
@@ -49,12 +50,17 @@ public class UserResource {
         return Response.ok(new UserResponse(userService.getById(id))).build();
     }
 
-    @PUT
+    @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, UserDTO user) {
-//        userService.update(id, user);
-        return Response.ok().build();
+    public Response update(@PathParam("id") Long id, UpdateUserDTO request) {
+        User user = userService.update(id, request);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("status:", "User updated successfully");
+        response.put("id:", user.getId().toString());
+        response.put("email:", user.getEmail());
+        return Response.ok(response).build();
     }
 
     @DELETE
