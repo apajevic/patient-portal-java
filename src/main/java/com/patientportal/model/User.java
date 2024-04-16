@@ -1,5 +1,6 @@
 package com.patientportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -7,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -48,19 +48,18 @@ public class User {
 //  @Length(min = 8, max = 24)
     private String passwordConfirm;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private Set<Appointment> appointmentsAsPatient;
+    @JsonIgnore
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Appointment appointmentAsPatient;
 
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Appointment> appointmentsAsDoctor;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private Set<Prescription> prescriptionsAsPatient;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Prescription> prescriptionsAsDoctor;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<UserCondition> userConditions;
 
     @Enumerated(EnumType.STRING)
@@ -81,17 +80,4 @@ public class User {
     private LocalDateTime updatedAt;
 
     private boolean active = true;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return getLoginCount() == user.getLoginCount() && isActive() == user.isActive() && Objects.equals(getId(), user.getId()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getName(), user.getName()) && Objects.equals(getPhone(), user.getPhone()) && Objects.equals(getAddress(), user.getAddress()) && getGender() == user.getGender() && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getPasswordConfirm(), user.getPasswordConfirm()) && Objects.equals(getAppointmentsAsPatient(), user.getAppointmentsAsPatient()) && Objects.equals(getAppointmentsAsDoctor(), user.getAppointmentsAsDoctor()) && getRole() == user.getRole() && Objects.equals(getLastLogin(), user.getLastLogin()) && Objects.equals(getCreatedAt(), user.getCreatedAt()) && Objects.equals(getUpdatedAt(), user.getUpdatedAt());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getName(), getPhone(), getAddress(), getGender(), getPassword(), getPasswordConfirm(), getAppointmentsAsPatient(), getAppointmentsAsDoctor(), getRole(), getLoginCount(), getLastLogin(), getCreatedAt(), getUpdatedAt(), isActive());
-    }
 }

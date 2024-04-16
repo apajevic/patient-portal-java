@@ -9,7 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +21,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "patient_id")
     private User patient;
 
@@ -54,8 +53,7 @@ public class Appointment {
 
     private String conclusion;
 
-    @Column(name = "status", columnDefinition = "varchar(255) DEFAULT 'ACTIVE'")
-    private String status;
+    private String status = "ACTIVE";
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -73,18 +71,5 @@ public class Appointment {
         this.endTime = endTime;
         this.location = location;
         this.description = description;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Appointment that = (Appointment) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getPatient(), that.getPatient()) && Objects.equals(getDoctor(), that.getDoctor()) && Objects.equals(getDate(), that.getDate()) && Objects.equals(getStartTime(), that.getStartTime()) && Objects.equals(getEndTime(), that.getEndTime()) && Objects.equals(getLocation(), that.getLocation()) && Objects.equals(getDescription(), that.getDescription()) && Objects.equals(getConclusion(), that.getConclusion()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getCreatedAt(), that.getCreatedAt()) && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getPatient(), getDoctor(), getDate(), getStartTime(), getEndTime(), getLocation(), getDescription(), getConclusion(), getStatus(), getCreatedAt(), getUpdatedAt());
     }
 }
