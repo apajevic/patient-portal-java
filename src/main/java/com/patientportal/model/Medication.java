@@ -1,6 +1,7 @@
 package com.patientportal.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,10 +22,12 @@ public class Medication {
     private Long id;
 
     @NonNull
+    @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "medication", cascade = CascadeType.ALL)
-    private Set<PrescriptionMedication> prescriptionMedications;
+    @ManyToMany(mappedBy = "medications")
+    @JsonIgnore
+    private Set<Prescription> prescriptions;
 
     @NonNull
     private String dosage;

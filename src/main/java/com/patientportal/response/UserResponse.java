@@ -3,11 +3,13 @@ package com.patientportal.response;
 import com.patientportal.model.Gender;
 import com.patientportal.model.Role;
 import com.patientportal.model.User;
+import com.patientportal.model.Condition;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -20,6 +22,7 @@ public class UserResponse {
     private String address;
     private Gender gender;
     private Role role;
+    private Set<Condition> conditions;
     private int loginCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -35,6 +38,7 @@ public class UserResponse {
         this.loginCount = user.getLoginCount();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
+        this.conditions = user.getConditions();
     }
 }
 

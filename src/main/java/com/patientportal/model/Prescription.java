@@ -36,8 +36,13 @@ public class Prescription {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 
-    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
-    private Set<PrescriptionMedication> prescriptionMedications;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "prescription_medication",
+            joinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id")
+    )
+    private Set<Medication> medications;
 
     @Column(name = "valid_until")
     @NotNull

@@ -4,7 +4,9 @@ import com.patientportal.dto.RegisterDTO;
 import com.patientportal.dto.UpdateUserDTO;
 import com.patientportal.exception.BusinessException;
 import com.patientportal.exception.TechnicalException;
+import com.patientportal.model.Condition;
 import com.patientportal.model.User;
+import com.patientportal.repository.ConditionRepository;
 import com.patientportal.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +25,9 @@ import java.util.stream.Stream;
 public class UserService {
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    ConditionRepository conditionRepository;
 
     @Inject
     PasswordService passwordService;
@@ -107,6 +113,10 @@ public class UserService {
         }
         if (request.gender() != null) {
             user.setGender(request.gender());
+        }
+        if (request.conditions() != null) {
+            Set<Condition> conditions = conditionRepository.findByIds(request.conditions());
+            user.setConditions(conditions);
         }
 
         user.setUpdatedAt(LocalDateTime.now());
