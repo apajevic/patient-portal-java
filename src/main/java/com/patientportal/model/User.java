@@ -49,8 +49,8 @@ public class User {
     private String passwordConfirm;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Appointment appointmentAsPatient;
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Appointment> appointmentsAsPatient;
 
     @JsonIgnore
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
