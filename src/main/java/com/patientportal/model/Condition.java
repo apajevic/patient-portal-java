@@ -1,11 +1,13 @@
 package com.patientportal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -20,10 +22,12 @@ public class Condition {
     private Long id;
 
     @NonNull
+    @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "condition", cascade = CascadeType.ALL)
-    private Set<UserCondition> userConditions;
+    @ManyToMany(mappedBy = "conditions")
+    @JsonIgnore
+    private Set<User> users;
 
     @NonNull
     private String description;
@@ -35,4 +39,9 @@ public class Condition {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
