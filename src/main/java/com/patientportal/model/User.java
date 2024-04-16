@@ -54,6 +54,15 @@ public class User {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<Appointment> appointmentsAsDoctor;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private Set<Prescription> prescriptionsAsPatient;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private Set<Prescription> prescriptionsAsDoctor;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserCondition> userConditions;
+
     @Enumerated(EnumType.STRING)
     private Role role = Role.PATIENT;
 

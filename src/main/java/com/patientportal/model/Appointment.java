@@ -30,6 +30,10 @@ public class Appointment {
     @JoinColumn(name = "doctor_id")
     private User doctor;
 
+    @ManyToOne
+    @JoinColumn(name = "prescription_id")
+    private Prescription prescription;
+
     @NotNull
     @Future
     private Date date;
