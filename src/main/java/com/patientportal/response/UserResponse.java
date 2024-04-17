@@ -1,9 +1,6 @@
 package com.patientportal.response;
 
-import com.patientportal.model.Gender;
-import com.patientportal.model.Role;
-import com.patientportal.model.User;
-import com.patientportal.model.Condition;
+import com.patientportal.model.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +21,7 @@ public class UserResponse {
     private Role role;
     private Set<Condition> conditions;
     private int loginCount;
+    private IPLog ipLog;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -36,6 +34,7 @@ public class UserResponse {
         this.gender = user.getGender();
         this.role = user.getRole();
         this.loginCount = user.getLoginCount();
+        this.ipLog = user.getIpLog();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();
         this.conditions = user.getConditions();

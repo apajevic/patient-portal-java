@@ -67,6 +67,10 @@ public class User {
     )
     private Set<Condition> conditions;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "iplog_id", referencedColumnName = "id")
+    private IPLog ipLog;
+
     @Enumerated(EnumType.STRING)
     private Role role = Role.PATIENT;
 

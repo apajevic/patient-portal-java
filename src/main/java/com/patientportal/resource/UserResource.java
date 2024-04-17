@@ -34,6 +34,7 @@ public class UserResource {
             response.put("status:", "User created successfully");
             response.put("id:", user.getId().toString());
             response.put("email:", user.getEmail());
+            response.put("iplog:", user.getIpLog().toString());
 
             return Response.status(Response.Status.CREATED).entity(response).build();
         } catch (BusinessException e) {

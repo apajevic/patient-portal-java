@@ -32,6 +32,9 @@ public class UserService {
     @Inject
     PasswordService passwordService;
 
+    @Inject
+    IplogService iplogService;
+
     @Transactional
     public User create(RegisterDTO request) throws BusinessException, TechnicalException {
         boolean userExists = Stream.of(
@@ -60,6 +63,8 @@ public class UserService {
         user.setPhone(request.phone());
         user.setAddress(request.address());
         user.setGender(request.gender());
+
+        user.setIpLog(iplogService.getIp());
 
         if (request.conditions() != null) {
             Set<Condition> conditions = conditionRepository.findByIds(request.conditions());
