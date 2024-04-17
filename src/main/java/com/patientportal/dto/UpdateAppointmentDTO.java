@@ -10,6 +10,7 @@ public record UpdateAppointmentDTO(
         String location,
         String status,
         String conclusion,
-        String description
+        String description,
+        Long prescription
 ) {
 }
