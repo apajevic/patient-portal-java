@@ -61,6 +61,11 @@ public class UserService {
         user.setAddress(request.address());
         user.setGender(request.gender());
 
+        if (request.conditions() != null) {
+            Set<Condition> conditions = conditionRepository.findByIds(request.conditions());
+            user.setConditions(conditions);
+        }
+
         userRepository.persist(user);
         if(userRepository.isPersistent(user)){
             return user;

@@ -4,8 +4,10 @@ import com.patientportal.dto.AppointmentDTO;
 import com.patientportal.exception.BusinessException;
 import com.patientportal.exception.TechnicalException;
 import com.patientportal.model.Appointment;
+import com.patientportal.model.Prescription;
 import com.patientportal.model.User;
 import com.patientportal.repository.AppointmentRepository;
+import com.patientportal.repository.PrescriptionRepository;
 import com.patientportal.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,6 +25,9 @@ public class AppointmentService {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    PrescriptionRepository prescriptionRepository;
+
     @Transactional
     public Appointment create(AppointmentDTO request) throws BusinessException, TechnicalException {
         User patient = userRepository.findByIdOptional(request.patientId())
@@ -34,6 +39,14 @@ public class AppointmentService {
                         "Doctor with id " + request.doctorId() + " not found"));
 
         Appointment appointment = new Appointment(patient, doctor, request.date(), request.startTime(), request.endTime(), request.location(), request.description());
+
+        if (request.prescription() != null) {
+            Prescription prescription = prescriptionRepository.findByIdOptional(request.prescription())
+                    .orElseThrow(() -> new BusinessException(Response.Status.BAD_REQUEST.getStatusCode(),
+                            "Prescription with id " + request.prescription() + " not found"));
+            appointment.setPrescription(prescription);
+        }
+
         appointmentRepository.persist(appointment);
         if(appointmentRepository.isPersistent(appointment)){
             return appointment;
@@ -99,6 +112,13 @@ public class AppointmentService {
 
         if(request.description() != null){
             appointment.setDescription(request.description());
+        }
+
+        if (request.prescription() != null) {
+            Prescription prescription = prescriptionRepository.findByIdOptional(request.prescription())
+                    .orElseThrow(() -> new BusinessException(Response.Status.BAD_REQUEST.getStatusCode(),
+                            "Prescription with id " + request.prescription() + " not found"));
+            appointment.setPrescription(prescription);
         }
 
         appointmentRepository.persist(appointment);

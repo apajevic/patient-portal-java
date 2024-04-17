@@ -11,7 +11,8 @@ public record AppointmentDTO(
         @NotBlank String startTime,
         @NotBlank String endTime,
         @NotBlank String location,
-        @NotBlank String description
+        @NotBlank String description,
+        Long prescription
 ) {
 }
 
