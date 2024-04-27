@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -76,7 +77,7 @@ public class UserService {
         );
     }
 
-    public User getById(Long id) throws BusinessException {
+    public User getById(UUID id) throws BusinessException {
         return userRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -100,7 +101,7 @@ public class UserService {
     }
 
     @Transactional
-    public User update(Long id, UpdateUserDTO request) throws BusinessException, TechnicalException {
+    public User update(UUID id, UpdateUserDTO request) throws BusinessException, TechnicalException {
         User user = userRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -136,7 +137,7 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(UUID id) {
         userRepository.findByIdOptional(id)
                 .ifPresentOrElse(userRepository::delete, () -> {
                     throw new NotFoundException("User with id " + id + " not found");

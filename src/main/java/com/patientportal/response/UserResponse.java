@@ -10,12 +10,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class UserResponse {
-    private Long id;
+    private UUID id;
     private String name;
     private String email;
     private String phone;

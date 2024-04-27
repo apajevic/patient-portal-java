@@ -8,12 +8,13 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class AppointmentResponse {
-    private Long id;
+    private UUID id;
     private UserResponse patient;
     private UserResponse doctor;
     private Prescription prescription;

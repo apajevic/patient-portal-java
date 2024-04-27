@@ -4,6 +4,7 @@ import com.patientportal.model.Gender;
 import jakarta.validation.constraints.*;
 
 import java.util.Set;
+import java.util.UUID;
 
 public record RegisterDTO(
         @NotBlank @Email String email,
@@ -13,6 +14,6 @@ public record RegisterDTO(
         @NotBlank Gender gender,
         @NotBlank String password,
         @NotBlank String passwordConfirm,
-        Set<Long> conditions
+        Set<UUID> conditions
 ) {
 }

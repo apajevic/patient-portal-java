@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class PrescriptionService {
@@ -37,7 +38,7 @@ public class PrescriptionService {
         );
     }
 
-    public Prescription getById(Long id) throws BusinessException {
+    public Prescription getById(UUID id) throws BusinessException {
         return prescriptionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -58,7 +59,7 @@ public class PrescriptionService {
     }
 
     @Transactional
-    public Prescription update(Long id, UpdatePrescriptionDTO updatedPrescription) throws BusinessException, TechnicalException {
+    public Prescription update(UUID id, UpdatePrescriptionDTO updatedPrescription) throws BusinessException, TechnicalException {
         Prescription prescription = prescriptionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -88,7 +89,7 @@ public class PrescriptionService {
     }
 
     @Transactional
-    public void delete(Long id) throws BusinessException {
+    public void delete(UUID id) throws BusinessException {
         Prescription prescription = prescriptionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),

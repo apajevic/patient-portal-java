@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Path("api/v1/appointments")
@@ -64,7 +65,7 @@ public class AppointmentResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response getOne(@PathParam("id") Long id) {
+    public Response getOne(@PathParam("id") UUID id) {
         try {
             return Response.ok(new AppointmentResponse(appointmentService.getById(id))).build();
         } catch (BusinessException e) {
@@ -77,7 +78,7 @@ public class AppointmentResource {
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, UpdateAppointmentDTO request) {
+    public Response update(@PathParam("id") UUID id, UpdateAppointmentDTO request) {
         try {
             Appointment appointment = appointmentService.update(id, request);
 
@@ -98,7 +99,7 @@ public class AppointmentResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         try {
             appointmentService.delete(id);
             return Response.ok().build();

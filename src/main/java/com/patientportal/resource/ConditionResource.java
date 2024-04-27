@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Path("api/v1/conditions")
 public class ConditionResource {
@@ -56,7 +57,7 @@ public class ConditionResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response getOne(@PathParam("id") Long id) {
+    public Response getOne(@PathParam("id") UUID id) {
         try {
             return Response.ok(conditionService.getById(id)).build();
         } catch (BusinessException e) {
@@ -69,7 +70,7 @@ public class ConditionResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, UpdateConditionDTO updatedCondition) {
+    public Response update(@PathParam("id") UUID id, UpdateConditionDTO updatedCondition) {
         try {
             Condition condition = conditionService.update(id, updatedCondition);
 
@@ -90,7 +91,7 @@ public class ConditionResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         try {
             conditionService.delete(id);
             return Response.ok().build();
