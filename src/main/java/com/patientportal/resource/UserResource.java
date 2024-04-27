@@ -17,6 +17,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Path("api/v1/users")
@@ -64,7 +65,7 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response getOne(@PathParam("id") Long id) {
+    public Response getOne(@PathParam("id") UUID id) {
         try {
             return Response.ok(new UserResponse(userService.getById(id))).build();
         } catch (BusinessException e) {
@@ -77,7 +78,7 @@ public class UserResource {
     @PATCH
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, UpdateUserDTO request) {
+    public Response update(@PathParam("id") UUID id, UpdateUserDTO request) {
         try {
             User user = userService.update(id, request);
 
@@ -98,7 +99,7 @@ public class UserResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         userService.delete(id);
         return Response.ok().build();
     }

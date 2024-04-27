@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class ConditionService {
@@ -37,7 +38,7 @@ public class ConditionService {
         );
     }
 
-    public Condition getById(Long id) throws BusinessException {
+    public Condition getById(UUID id) throws BusinessException {
         return conditionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -58,7 +59,7 @@ public class ConditionService {
     }
 
     @Transactional
-    public Condition update(Long id, UpdateConditionDTO updatedCondition) throws BusinessException, TechnicalException {
+    public Condition update(UUID id, UpdateConditionDTO updatedCondition) throws BusinessException, TechnicalException {
         Condition condition = conditionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -84,7 +85,7 @@ public class ConditionService {
     }
 
     @Transactional
-    public void delete(Long id) throws BusinessException {
+    public void delete(UUID id) throws BusinessException {
         Condition condition = conditionRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),

@@ -13,6 +13,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Path("api/v1/medications")
 public class MedicationResource {
@@ -55,7 +56,7 @@ public class MedicationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response getOne(@PathParam("id") Long id) {
+    public Response getOne(@PathParam("id") UUID id) {
         try {
             return Response.ok(medicationService.getById(id)).build();
         } catch (BusinessException e) {
@@ -68,7 +69,7 @@ public class MedicationResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response update(@PathParam("id") Long id, Medication updatedMedication) {
+    public Response update(@PathParam("id") UUID id, Medication updatedMedication) {
         try {
             Medication medication = medicationService.update(id, updatedMedication);
 
@@ -89,7 +90,7 @@ public class MedicationResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") UUID id) {
         try {
             medicationService.delete(id);
             return Response.ok().build();

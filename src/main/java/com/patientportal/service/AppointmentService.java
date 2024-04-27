@@ -16,6 +16,7 @@ import jakarta.ws.rs.core.Response;
 import com.patientportal.dto.UpdateAppointmentDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class AppointmentService {
@@ -57,7 +58,7 @@ public class AppointmentService {
         );
     }
 
-    public Appointment getById(Long id) throws BusinessException {
+    public Appointment getById(UUID id) throws BusinessException {
         return appointmentRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -79,7 +80,7 @@ public class AppointmentService {
 
 
     @Transactional
-    public Appointment update(Long id, UpdateAppointmentDTO request) throws BusinessException, TechnicalException {
+    public Appointment update(UUID id, UpdateAppointmentDTO request) throws BusinessException, TechnicalException {
         Appointment appointment = appointmentRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),
@@ -132,7 +133,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void delete(Long id) throws BusinessException {
+    public void delete(UUID id) throws BusinessException {
         Appointment appointment = appointmentRepository.findByIdOptional(id)
                 .orElseThrow(() -> new BusinessException(
                         Response.Status.NOT_FOUND.getStatusCode(),

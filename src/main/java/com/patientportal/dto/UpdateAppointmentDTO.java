@@ -2,6 +2,7 @@ package com.patientportal.dto;
 
 
 import java.util.Date;
+import java.util.UUID;
 
 public record UpdateAppointmentDTO(
         Date date,
@@ -11,6 +12,6 @@ public record UpdateAppointmentDTO(
         String status,
         String conclusion,
         String description,
-        Long prescription
+        UUID prescription
 ) {
 }
