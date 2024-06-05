@@ -19,6 +19,7 @@ public class UserResponse {
     private UUID id;
     private String name;
     private String email;
+    private String photo;
     private String phone;
     private String address;
     private Gender gender;
@@ -32,6 +33,7 @@ public class UserResponse {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.photo = user.getPhoto();
         this.phone = user.getPhone();
         this.address = user.getAddress();
         this.gender = user.getGender();

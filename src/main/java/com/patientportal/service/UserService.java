@@ -1,5 +1,6 @@
 package com.patientportal.service;
 
+import com.patientportal.dto.ProfilePictureForm;
 import com.patientportal.dto.RegisterDTO;
 import com.patientportal.dto.UpdateUserDTO;
 import com.patientportal.exception.BusinessException;
@@ -14,6 +15,11 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +30,8 @@ import java.util.stream.Stream;
 
 @ApplicationScoped
 public class UserService {
+    private static final String PROFILE_PICTURES_DIR = "src/main/resources/profile-pictures/";
+
     @Inject
     UserRepository userRepository;
 
@@ -133,6 +141,35 @@ public class UserService {
         throw new TechnicalException(
                 Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
                 "User could not be updated"
+        );
+    }
+
+    @Transactional
+    public User saveProfilePicture(UUID id, ProfilePictureForm form) throws BusinessException, IOException, TechnicalException {
+
+        User user = userRepository.findByIdOptional(id)
+                .orElseThrow(() -> new BusinessException(
+                        Response.Status.NOT_FOUND.getStatusCode(),
+                        "User with id " + id + " not found"
+                ));
+
+        Path uploadDir = Paths.get(PROFILE_PICTURES_DIR);
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        String photo = id + "-" + form.getFile().fileName();
+        Path filePath = uploadDir.resolve(photo);
+        Files.copy(form.getFile().uploadedFile(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        user.setPhoto(photo);
+        userRepository.persist(user);
+        if(userRepository.isPersistent(user)){
+            return user;
+        }
+        throw new TechnicalException(
+                Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
+                "Profile picture could not be saved"
         );
     }
 

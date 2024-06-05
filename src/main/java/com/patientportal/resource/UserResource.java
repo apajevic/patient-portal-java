@@ -1,5 +1,6 @@
 package com.patientportal.resource;
 
+import com.patientportal.dto.ProfilePictureForm;
 import com.patientportal.dto.RegisterDTO;
 import com.patientportal.dto.UpdateUserDTO;
 import com.patientportal.exception.BusinessException;
@@ -13,11 +14,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import org.jboss.resteasy.reactive.MultipartForm;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("api/v1/users")
@@ -87,6 +85,27 @@ public class UserResource {
             response.put("id:", user.getId().toString());
             response.put("email:", user.getEmail());
             return Response.ok(response).build();
+        } catch (BusinessException e) {
+            return new BusinessExceptionMapper().toResponse(e);
+        } catch (TechnicalException e) {
+            return new TechnicalExceptionMapper().toResponse(e);
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/{id}/profile-picture")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadProfilePicture(@PathParam("id") UUID id, @MultipartForm ProfilePictureForm form) {
+        try {
+            if (form.getFile() == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("No file uploaded").build();
+            }
+
+            User user = userService.saveProfilePicture(id, form);
+            return Response.ok().entity(new UserResponse(user)).build();
         } catch (BusinessException e) {
             return new BusinessExceptionMapper().toResponse(e);
         } catch (TechnicalException e) {
