@@ -34,6 +34,8 @@ public class User {
     @NotBlank
     private String name;
 
+    private String photo;
+
     @NotBlank
     @Column(unique = true)
     private String phone;
