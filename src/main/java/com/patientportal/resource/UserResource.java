@@ -14,7 +14,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.resteasy.reactive.MultipartForm;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -98,7 +97,7 @@ public class UserResource {
     @Path("/{id}/profile-picture")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadProfilePicture(@PathParam("id") UUID id, @MultipartForm ProfilePictureForm form) {
+    public Response uploadProfilePicture(@PathParam("id") UUID id, ProfilePictureForm form) {
         try {
             if (form.getFile() == null) {
                 return Response.status(Response.Status.BAD_REQUEST).entity("No file uploaded").build();
