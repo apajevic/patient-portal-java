@@ -158,6 +158,16 @@ public class UserService {
             Files.createDirectories(uploadDir);
         }
 
+        Files.list(uploadDir)
+                .filter(path -> path.getFileName().toString().startsWith(id + "-"))
+                .forEach(path -> {
+                    try {
+                        Files.delete(path);
+                    } catch (IOException ignored) {
+                    }
+                });
+
+
         String photo = id + "-" + form.getFile().fileName();
         Path filePath = uploadDir.resolve(photo);
         Files.copy(form.getFile().uploadedFile(), filePath, StandardCopyOption.REPLACE_EXISTING);
