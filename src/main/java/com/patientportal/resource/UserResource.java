@@ -80,7 +80,7 @@ public class UserResource {
             User user = userService.update(id, request);
 
             Map<String, String> response = new HashMap<>();
-            response.put("status:", "User updated successfully");
+            response.put("status:", "User was updated successfully");
             response.put("id:", user.getId().toString());
             response.put("email:", user.getEmail());
             return Response.ok(response).build();
